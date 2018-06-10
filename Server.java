@@ -21,6 +21,7 @@ public class Server
 			{
 				// wait for a connection request
 				Socket socket = ss.accept();
+				System.out.println("A client has connected...");
 				connection = new Thread(new MessagesFromTransMitter(socket)); 
 				connection.start(); 
 			} 
@@ -37,6 +38,7 @@ public class Server
 		private Socket socket;
 
 		private DataInputStream is;
+		private DataOutputStream os;
 
 		public MessagesFromTransMitter(Socket aSocket)
 		{
@@ -48,11 +50,16 @@ public class Server
 			try
 			{
                 is = new DataInputStream(socket.getInputStream());
-				int valueFromTransmitter = 0;
+				os = new DataOutputStream(socket.getOutputStream());
+
+				int valueIn = 0;
+				int valueOut = 0;
 
 				while(socket.isConnected())
 			    {
-			        valueFromTransmitter = is.readInt();
+			        valueIn = is.readInt();
+					valueOut = valueIn;
+					os.writeInt(valueOut);
 				}
 
 				socket.close(); 

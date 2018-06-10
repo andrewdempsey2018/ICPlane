@@ -5,7 +5,7 @@ public class Plane
 {
     private Socket socket;
 	static final int PORT = 2000;
-	static final String ADDRESS = "192.168.1.3";
+	static final String ADDRESS = "127.0.0.1";
 	private DataInputStream is;
 
 	Runtime runTime = Runtime.getRuntime();
