@@ -62,7 +62,7 @@ public class Transmitter extends JFrame
 		}
 	}
 	
-	public void start()
+	public void runProgram()
 	{
 		setVisible(true);
 	}

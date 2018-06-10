@@ -23,7 +23,7 @@ public class Plane
 		}
 	}
 
-	public void start()
+	public void runProgram()
 	{
         int valueFromServer = 0;
 

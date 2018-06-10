@@ -3,122 +3,64 @@ import java.net.*;
 
 public class Server
 {
-
-    private ServerSocket serverSocket;
-	private Socket socket;
-    private DataInputStream is;
-		
-	static final int PORT = 2000;
+    static final int PORT = 2000;
+	private Thread connection;
 
 	public Server()
 	{
-        try
-		{
-			serverSocket = new ServerSocket(PORT);
-		}
-		catch(IOException e)
-		{
-			System.out.println(e);
-		}
-
-		/*try
-		{
-        }
-        catch(Exception e)
-		{
-            System.out.println(e);
-		}*/
+		System.out.println("Server has started...");
 	}
-	
-	public void run()
+
+	public void runProgram()
 	{
 		try
 		{
-			socket = serverSocket.accept();
-			is = new DataInputStream(socket.getInputStream());
+			ServerSocket ss = new ServerSocket(PORT);
 
-            int valueFromClient = 0;
-			
-
-			while(socket.isConnected())
+			while (true)
 			{
-			    
-			    valueFromClient = is.readInt();
-				
-                if(valueFromClient == 1)
-				{
-					System.out.println("Elevator++");
-					//runTime.exec("sudo echo 1=-10 > /dev/servoblaster");
-					runTime.exec(new String[] {"bash", "-c", "echo 1=+10 > /dev/servoblaster"});
-				}
-
-				if(valueFromClient == 3)
-				{
-					System.out.println("Elevator--");
-					//runTime.exec("echo 1=-10 > /dev/servoblaster");
-					runTime.exec(new String[] {"bash", "-c", "echo 1=-10 > /dev/servoblaster"});
-				}
-
-				if(valueFromClient == 4)
-				{
-					System.out.println("Rudder++");
-					//runTime.exec("echo 3=+10 > /dev/servoblaster");
-					runTime.exec(new String[] {"bash", "-c", "echo 3=+10 > /dev/servoblaster"});
-				}
-
-                if(valueFromClient == 6)
-				{
-					System.out.println("Rudder--");
-					//runTime.exec("echo 3=-10 > /dev/servoblaster");
-					runTime.exec(new String[] {"bash", "-c", "echo 3=-10 > /dev/servoblaster"});
-				}
-
-				/*if(valueFromClient == 5)
-				{
-					System.out.println("Rudder position is Center");
-					runTime.exec("gpio pwm 24 152 && gpio pwm 1 200");
-				}
-				if(valueFromClient == 6)
-				{
-					System.out.println("Rudder position is Right");
-					runTime.exec("gpio pwm 24 200 && gpio pwm 1 152");
-				}*/
-
-				if(valueFromClient == 7)
-				{
-					try
-			        {
-				        socket.close();
-			        }
-			        catch(IOException ioe)
-			        {
-				        System.out.println(ioe);
-			        }
-				}
-			}
+				// wait for a connection request
+				Socket socket = ss.accept();
+				connection = new Thread(new MessagesFromTransMitter(socket)); 
+				connection.start(); 
+			} 
 		}
-		catch(IOException e)
-		{
-			System.out.println(e);
+		catch (Exception e) 
+		{ 
+			System.out.println("Trouble with a connection " + e); 
 		}
-
-		//statusLabel.setText("Client has disconnected");
 		
 	}
 
-    /*public class CloseProgram extends WindowAdapter
+	private class MessagesFromTransMitter implements Runnable
     {
-        public void windowClosing (WindowEvent e)
-        {
+		private Socket socket;
+
+		private DataInputStream is;
+
+		public MessagesFromTransMitter(Socket aSocket)
+		{
+			socket = aSocket;
+		}
+
+		public void run ()
+		{
 			try
 			{
-				socket.close();
-			}
-			catch(IOException ioe)
-			{
-				System.out.println(ioe);
-			}
-            System.exit(0);
-        }
-    }*/
+                is = new DataInputStream(socket.getInputStream());
+				int valueFromTransmitter = 0;
+
+				while(socket.isConnected())
+			    {
+			        valueFromTransmitter = is.readInt();
+				}
+
+				socket.close(); 
+			} 
+			catch(Exception e) 
+			{ 
+				System.out.println("Trouble with a connection " + e); 
+			} 
+		}
+	}
 }
