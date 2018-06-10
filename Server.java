@@ -10,9 +10,7 @@ public class Server
 		
 	static final int PORT = 2000;
 
-	Runtime runTime = Runtime.getRuntime();
-
-    public Server()
+	public Server()
 	{
         try
 		{
