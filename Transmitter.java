@@ -11,17 +11,13 @@ public class Transmitter extends JFrame
 	static final String ADDRESS = "192.168.1.3";
 	private DataOutputStream os;
 	private JButton elevatorUpButton, elevatorDownButton, elevatorCenterButton, rudderLeftButton, rudderRightButton, rudderCenterButton;
-	private JLabel elevatorPositionLabel, rudderPositionLabel;
 
     public Transmitter()
 	{
 		setLayout(null);
 		setSize(480, 240);
-		setTitle("TestFlight Client");
+		setTitle("ICPlane Transmitter");
         addWindowListener(new CloseProgram());
-
-		elevatorPositionLabel = new JLabel("Elevator position is Center");
-		elevatorPositionLabel.setBounds(60, 25, 200, 20);
 
 		elevatorUpButton = new JButton("Up");
 		elevatorUpButton.addActionListener(new ButtonWatcher());
@@ -35,9 +31,6 @@ public class Transmitter extends JFrame
 		elevatorDownButton.addActionListener(new ButtonWatcher());
 		elevatorDownButton.setBounds(168, 50, 64, 32);
 
-		rudderPositionLabel = new JLabel("Rudder position is Center");
-		rudderPositionLabel.setBounds(60, 95, 200, 20);
-
 		rudderLeftButton = new JButton("Left");
 		rudderLeftButton.addActionListener(new ButtonWatcher());
 		rudderLeftButton.setBounds(20, 120, 64, 32);
@@ -50,12 +43,10 @@ public class Transmitter extends JFrame
 		rudderRightButton.addActionListener(new ButtonWatcher());
 		rudderRightButton.setBounds(168, 120, 64, 32);
 
-		add(elevatorPositionLabel);
 		add(elevatorUpButton);
 		add(elevatorCenterButton);
 		add(elevatorDownButton);
 
-		add(rudderPositionLabel);
 		add(rudderLeftButton);
 		add(rudderCenterButton);
 		add(rudderRightButton);
@@ -99,12 +90,8 @@ public class Transmitter extends JFrame
 		public void actionPerformed(ActionEvent e)
 		{
 
-			//elevator
-
 			if(e.getSource() == elevatorUpButton)
 			{
-				//elevatorPositionLabel.setText("Elevator position is Up");
-				
 				try
 				{
 				    os.writeInt(1);
@@ -117,8 +104,6 @@ public class Transmitter extends JFrame
 
 			if(e.getSource() == elevatorCenterButton)
 			{
-				/*elevatorPositionLabel.setText("Elevator position is Center");
-
 				try
 				{
 				    os.writeInt(2);
@@ -126,13 +111,11 @@ public class Transmitter extends JFrame
 				catch(IOException ioe)
 				{
 					System.out.println(ioe);
-				}*/
+				}
 			}
 
 			if(e.getSource() == elevatorDownButton)
 			{
-				//elevatorPositionLabel.setText("Elevator position is Down");
-
 				try
 				{
 				    os.writeInt(3);
@@ -143,12 +126,8 @@ public class Transmitter extends JFrame
 				}
 			}
 			
-			//rudder
-
 			if(e.getSource() == rudderLeftButton)
 			{
-				//rudderPositionLabel.setText("Rudder position is Left");
-
 				try
 				{
 				    os.writeInt(4);
@@ -161,8 +140,6 @@ public class Transmitter extends JFrame
 
 			if(e.getSource() == rudderCenterButton)
 			{
-				/*rudderPositionLabel.setText("Rudder position is Center");
-
 				try
 				{
 				    os.writeInt(5);
@@ -170,13 +147,11 @@ public class Transmitter extends JFrame
 				catch(IOException ioe)
 				{
 					System.out.println(ioe);
-				}*/
+				}
 			}
 
 			if(e.getSource() == rudderRightButton)
 			{
-				//rudderPositionLabel.setText("Rudder position is Right");
-
 				try
 				{
 				    os.writeInt(6);
