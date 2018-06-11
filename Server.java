@@ -17,13 +17,14 @@ public class Server
 		{
 			ServerSocket ss = new ServerSocket(PORT);
 
-			while (true)
+			while(true)
 			{
 				// wait for a connection request
 				Socket socket = ss.accept();
 				System.out.println("A client has connected...");
 				connection = new Thread(new MessagesFromTransMitter(socket)); 
 				connection.start(); 
+
 			} 
 		}
 		catch (Exception e) 
@@ -60,6 +61,8 @@ public class Server
 			        valueIn = is.readInt();
 					valueOut = valueIn;
 					os.writeInt(valueOut);
+
+					System.out.println("val in: " + valueIn + " val out: " + valueOut);
 				}
 
 				socket.close(); 

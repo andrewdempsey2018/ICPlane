@@ -11,7 +11,7 @@ public class Transmitter extends JFrame
 	static final String ADDRESS = "127.0.0.1";
 	private DataOutputStream os;
 	//private DataInputStream is;
-	private JButton elevatorUpButton, elevatorDownButton, elevatorCenterButton, rudderLeftButton, rudderRightButton, rudderCenterButton;
+	private JButton elevatorUpButton, elevatorDownButton, elevatorCenterButton, rudderLeftButton, rudderRightButton, rudderCenterButton, shutdownButton;
 
     public Transmitter()
 	{
@@ -44,9 +44,15 @@ public class Transmitter extends JFrame
 		rudderRightButton.addActionListener(new ButtonWatcher());
 		rudderRightButton.setBounds(168, 120, 64, 32);
 
+		shutdownButton = new JButton("off");
+		shutdownButton.addActionListener(new ButtonWatcher());
+		shutdownButton.setBounds(94, 162, 64, 32);
+
 		add(elevatorUpButton);
 		add(elevatorCenterButton);
 		add(elevatorDownButton);
+
+		add(shutdownButton);
 
 		add(rudderLeftButton);
 		add(rudderCenterButton);
@@ -157,6 +163,18 @@ public class Transmitter extends JFrame
 				try
 				{
 				    os.writeInt(6);
+				}
+				catch(IOException ioe)
+				{
+					System.out.println(ioe);
+				}
+			}
+
+			if(e.getSource() == shutdownButton)
+			{
+				try
+				{
+				    os.writeInt(8);
 				}
 				catch(IOException ioe)
 				{
