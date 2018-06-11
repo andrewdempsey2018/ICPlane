@@ -21,7 +21,8 @@ public class Plane
 			socket = new Socket(ADDRESS, PORT);
 			is = new DataInputStream(socket.getInputStream());
 
-			os = new DataOutputStream(socket.getOutputStream()); //123
+			os = new DataOutputStream(socket.getOutputStream());
+os.writeInt(999);
 		}
 		catch(IOException e)
 		{
@@ -29,7 +30,7 @@ public class Plane
 		}
 	}
 
-	public void runProgram()
+    public void runProgram()
 	{
         try
 		{
@@ -37,13 +38,11 @@ public class Plane
 
 			valueFromServer = is.readInt();
 
-			os.writeInt(valueFromServer + 1000);
-			
-			//while(socket.isConnected())
-			while(true)
+			System.out.println("val from server= " + valueFromServer);
+
+			while(socket.isConnected())
 			{
-System.out.println("sadas!");
-				valueFromServer = is.readInt();
+                valueFromServer = is.readInt();
 
 				if(valueFromServer == 1)
 				{

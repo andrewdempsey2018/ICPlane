@@ -20,7 +20,11 @@ public class Server
 			while(true)
 			{
 				Socket socket = ss.accept();
-				connection = new Thread(new Connection(socket));
+			
+				DataInputStream dis = new DataInputStream(socket.getInputStream());
+                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+
+				connection = new Thread(new Connection(socket, dis, dos));
 				connection.start();
 
 				System.out.println("A client has connected...");
@@ -38,16 +42,18 @@ public class Server
 		private DataOutputStream os;
 	    private DataInputStream is;
 			
-		public Connection(Socket aSocket)
+		public Connection(Socket aSocket, DataInputStream dis, DataOutputStream dos)
 		{
 			socket = aSocket;
+			os = dos;
+			is = dis;
 		}
 
 		public void run()
 		{
 			try
 			{
-				openStreams();
+				//openStreams();
 				processMessages();
 				closeStreams();
 				socket.close();
@@ -58,11 +64,11 @@ public class Server
 			}
 		}
 			
-		private void openStreams() throws IOException
+		/*private void openStreams() throws IOException
 	    {
 		    is = new DataInputStream(socket.getInputStream());
 		    os = new DataOutputStream(socket.getOutputStream());
-	    }
+	    }*/
 
 		private void closeStreams() throws IOException
 	    {    
