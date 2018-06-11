@@ -22,7 +22,6 @@ public class Plane
 			is = new DataInputStream(socket.getInputStream());
 
 			os = new DataOutputStream(socket.getOutputStream());
-os.writeInt(999);
 		}
 		catch(IOException e)
 		{

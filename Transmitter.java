@@ -104,6 +104,10 @@ public class Transmitter extends JFrame
 			{
 				try
 				{
+					System.out.println("£££");
+					int smeg = is.readInt();
+					System.out.println(smeg);
+					System.out.println("£££");
 				    os.writeInt(1);
 				}
 				catch(IOException ioe)

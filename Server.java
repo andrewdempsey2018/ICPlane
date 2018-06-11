@@ -4,7 +4,6 @@ import java.net.*;
 public class Server
 {
     static final int PORT = 2000;
-	private Thread connection;
 
 	public Server()
 	{
@@ -24,7 +23,7 @@ public class Server
 				DataInputStream dis = new DataInputStream(socket.getInputStream());
                 DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 
-				connection = new Thread(new Connection(socket, dis, dos));
+				Thread connection = new Thread(new Connection(socket, dis, dos));
 				connection.start();
 
 				System.out.println("A client has connected...");
@@ -36,7 +35,7 @@ public class Server
 		}
 	}
 
-	private class Connection implements Runnable
+	private class Connection extends Thread
 	{
 		private Socket socket;
 		private DataOutputStream os;
