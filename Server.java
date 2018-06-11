@@ -4,7 +4,7 @@ import java.net.*;
 public class Server
 {
     static final int PORT = 2000;
-	private Thread connection;
+	Connection connection;
 
 	public Server()
 	{
@@ -22,9 +22,11 @@ public class Server
 				// wait for a connection request
 				Socket socket = ss.accept();
 				
-				System.out.println("A client has connected...");
-				connection = new Thread(new MessagesFromTransMitter(socket)); 
+				
+
+				connection = new Connection(socket); 
 				connection.start();
+				System.out.println("A client has connected...");
             } 
 		}
 		catch (Exception e) 
@@ -34,43 +36,57 @@ public class Server
 		
 	}
 
-	private class MessagesFromTransMitter implements Runnable
+	public class Connection extends Thread
     {
 		private Socket socket;
-
-		private DataInputStream is;
 		private DataOutputStream os;
+		private DataInputStream is;
+		private boolean running;
 
-		public MessagesFromTransMitter(Socket aSocket)
+		private int value;
+
+		public Connection(Socket aSocket)
 		{
+			
 			socket = aSocket;
-		}
 
-		public void run ()
-		{
 			try
 			{
-                is = new DataInputStream(socket.getInputStream());
 				os = new DataOutputStream(socket.getOutputStream());
-
-				int valueIn = 0;
-				int valueOut = 0;
-
-				while(socket.isConnected())
-			    {
-			        valueIn = is.readInt();
-					valueOut = valueIn;
-					os.writeInt(valueOut);
-
-					System.out.println("val in: " + valueIn + " val out: " + valueOut);
+				is = new DataInputStream(socket.getInputStream());
+			}
+			catch(Exception e)
+			{
+				value = 0;
+				running = true;
+			}
+		}
+	
+		public void run()
+		{
+			while(running)
+			{
+				try
+				{
+					value = is.readInt();
+					os.writeInt(value);
 				}
-
-				socket.close(); 
-			} 
-			catch(Exception e) 
-			{ 
-				System.out.println("Trouble with a connection " + e); 
-			} 
+				catch(Exception e)
+				{
+					System.out.println(e);
+				}
+			}
+			
+			try
+			{
+				os.close();
+				is.close();
+				socket.close();
+			}
+			catch(Exception e)
+			{
+				System.out.println(e);
+			}
 		}
 	}
 }

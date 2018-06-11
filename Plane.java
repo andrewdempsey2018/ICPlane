@@ -7,18 +7,17 @@ public class Plane
 	static final int PORT = 2000;
 	static final String ADDRESS = "127.0.0.1";
 	private DataInputStream is;
-	
-	private DataOutputStream os; //123
 
 	Runtime runTime = Runtime.getRuntime();
 
 	public Plane()
 	{
+
+		System.out.println("Plane ready...");
         try
 		{
 			socket = new Socket(ADDRESS, PORT);
 			is = new DataInputStream(socket.getInputStream());
-			os = new DataOutputStream(socket.getOutputStream()); //123
 		}
 		catch(IOException e)
 		{

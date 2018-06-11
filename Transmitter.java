@@ -14,6 +14,8 @@ public class Transmitter extends JFrame
 
     public Transmitter()
 	{
+		System.out.println("Transmitter ready...");
+
 		setLayout(null);
 		setSize(480, 240);
 		setTitle("ICPlane Transmitter");
