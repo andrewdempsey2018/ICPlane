@@ -4,64 +4,83 @@ import java.net.*;
 public class Server
 {
     static final int PORT = 2000;
+	private Thread connection;
 		
-	ServerSocket ss;
-	Socket socket;
-
-	private DataOutputStream os;
-	private DataInputStream is;
-
 	public Server()
 	{
 		System.out.println("Server has started...");
-
-		try
-		{
-			ss = new ServerSocket(PORT);
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-		}
-}
+    }
 
 	public void runProgram()
 	{
 		try
 		{
-			socket = ss.accept();
-			openStreams();
-			processMessages();
-			closeStreams();
+			ServerSocket ss = new ServerSocket(PORT);
+
+			while(true)
+			{
+				Socket socket = ss.accept();
+				connection = new Thread(new Connection(socket));
+				connection.start();
+
+				System.out.println("A client has connected...");
+			}
 		}
-		catch(IOException ioe)
+		catch(Exception e)
 		{	
-			System.out.println(ioe);
+			System.out.println(e);
 		}
 	}
 
-	private void openStreams() throws IOException
+	private class Connection implements Runnable
 	{
-		is = new DataInputStream(socket.getInputStream());
-		os = new DataOutputStream(socket.getOutputStream());
-	}
-
-	private void closeStreams() throws IOException
-	{
-		is.close();
-		os.close();
-	}
-
-	private void processMessages() throws IOException
-	{
-		int value = 0;
-
-		while(value != 7) //value 7 from transmitter = socket close
+		private Socket socket;
+		private DataOutputStream os;
+	    private DataInputStream is;
+			
+		public Connection(Socket aSocket)
 		{
-			value = is.readInt();
-			os.writeInt(value);
-			System.out.println(value);
+			socket = aSocket;
 		}
+
+		public void run()
+		{
+			try
+			{
+				openStreams();
+				processMessages();
+				closeStreams();
+				socket.close();
+			}
+			catch(Exception e)
+			{
+				System.out.println(e);
+			}
+		}
+			
+		private void openStreams() throws IOException
+	    {
+		    is = new DataInputStream(socket.getInputStream());
+		    os = new DataOutputStream(socket.getOutputStream());
+	    }
+
+		private void closeStreams() throws IOException
+	    {    
+		    is.close();
+		    os.close();
+	    }
+
+		private void processMessages() throws IOException
+	    {
+		    int value = 0;
+
+		    while(value != 7) //value 7 from transmitter = socket close
+		    {
+			    value = is.readInt();
+			    os.writeInt(value);
+			    System.out.println(value);
+		    }
+	    }
 	}
 
 }
