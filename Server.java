@@ -5,7 +5,7 @@ public class Server
 {
     static final int PORT = 2000;
 	private Thread connection;
-		
+
 	public Server()
 	{
 		System.out.println("Server has started...");

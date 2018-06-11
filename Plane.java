@@ -8,6 +8,8 @@ public class Plane
 	static final String ADDRESS = "127.0.0.1";
 	private DataInputStream is;
 
+	private DataOutputStream os; //123
+
 	Runtime runTime = Runtime.getRuntime();
 
 	public Plane()
@@ -18,6 +20,8 @@ public class Plane
 		{
 			socket = new Socket(ADDRESS, PORT);
 			is = new DataInputStream(socket.getInputStream());
+
+			os = new DataOutputStream(socket.getOutputStream()); //123
 		}
 		catch(IOException e)
 		{
@@ -31,11 +35,15 @@ public class Plane
 		{
 			int valueFromServer = 0;
 
-			while(socket.isConnected())
-			{
-				valueFromServer = is.readInt();
+			valueFromServer = is.readInt();
 
-				System.out.println("check2" + is.readInt());
+			os.writeInt(valueFromServer + 1000);
+			
+			//while(socket.isConnected())
+			while(true)
+			{
+System.out.println("sadas!");
+				valueFromServer = is.readInt();
 
 				if(valueFromServer == 1)
 				{
