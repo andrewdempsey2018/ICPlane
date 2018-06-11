@@ -10,7 +10,6 @@ public class Transmitter extends JFrame
 	static final int PORT = 2000;
 	static final String ADDRESS = "127.0.0.1";
 	private DataOutputStream os;
-	//private DataInputStream is;
 	private JButton elevatorUpButton, elevatorDownButton, elevatorCenterButton, rudderLeftButton, rudderRightButton, rudderCenterButton, shutdownButton;
 
     public Transmitter()
@@ -62,7 +61,6 @@ public class Transmitter extends JFrame
 		{
 			socket = new Socket(ADDRESS, PORT);
 			os = new DataOutputStream(socket.getOutputStream());
-			//is = new DataInputStream(socket.getInputStream());
 		}
 		catch(IOException e)
 		{

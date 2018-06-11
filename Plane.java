@@ -7,6 +7,8 @@ public class Plane
 	static final int PORT = 2000;
 	static final String ADDRESS = "127.0.0.1";
 	private DataInputStream is;
+	
+	private DataOutputStream os; //123
 
 	Runtime runTime = Runtime.getRuntime();
 
@@ -16,6 +18,7 @@ public class Plane
 		{
 			socket = new Socket(ADDRESS, PORT);
 			is = new DataInputStream(socket.getInputStream());
+			os = new DataOutputStream(socket.getOutputStream()); //123
 		}
 		catch(IOException e)
 		{
@@ -27,12 +30,11 @@ public class Plane
 	{
         try
 		{
-			
-            int valueFromServer = 0;
+			int valueFromServer = 0;
 
 			while(socket.isConnected())
 			{
-				//valueFromServer = is.readInt();
+				valueFromServer = is.readInt();
 
 				System.out.println("check2" + is.readInt());
 
@@ -72,17 +74,17 @@ public class Plane
 					runTime.exec(new String[] {"bash", "-c", "echo 3=-10 > /dev/servoblaster"});
 				}
 
-				/*if(valueFromServer == 7)
+				if(valueFromServer == 7)
 				{
 					try
 			        {
-				        //socket.close();
+				        socket.close();
 			        }
 			        catch(IOException ioe)
 			        {
 				        System.out.println(ioe);
 			        }
-				}*/
+				}
 
 				if(valueFromServer == 8)
 				{

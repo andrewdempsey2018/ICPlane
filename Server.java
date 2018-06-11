@@ -21,11 +21,11 @@ public class Server
 			{
 				// wait for a connection request
 				Socket socket = ss.accept();
+				
 				System.out.println("A client has connected...");
 				connection = new Thread(new MessagesFromTransMitter(socket)); 
-				connection.start(); 
-
-			} 
+				connection.start();
+            } 
 		}
 		catch (Exception e) 
 		{ 
