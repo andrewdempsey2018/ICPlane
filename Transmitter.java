@@ -75,6 +75,18 @@ public class Transmitter extends JFrame
 	public void runProgram()
 	{
 		setVisible(true);
+
+		while(true)
+		{
+			try
+			{
+				System.out.println("server said: " + is.readInt());
+			}
+			catch(Exception e)
+			{
+				System.out.println("trouble on transmitter: " + e);
+			}
+		}
 	}
 
     private class CloseProgram extends WindowAdapter
@@ -104,11 +116,7 @@ public class Transmitter extends JFrame
 			{
 				try
 				{
-					System.out.println("£££");
-					int smeg = is.readInt();
-					System.out.println(smeg);
-					System.out.println("£££");
-				    os.writeInt(1);
+					os.writeInt(1);
 				}
 				catch(IOException ioe)
 				{

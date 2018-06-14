@@ -29,6 +29,23 @@ public class Plane
 		}
 	}
 
+	public void testRunProgram()
+	{
+		System.out.println("Plane got here");
+		while(true)
+		{
+			try
+			{
+				System.out.println("" + is.readInt());
+				os.writeInt(666);
+			}
+			catch(Exception e)
+			{
+				System.out.println("trouble with plane: " + e);
+			}
+		}
+	}
+
     public void runProgram()
 	{
         try

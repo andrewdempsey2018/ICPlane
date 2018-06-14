@@ -20,10 +20,10 @@ public class Server
 			{
 				Socket socket = ss.accept();
 			
-				DataInputStream dis = new DataInputStream(socket.getInputStream());
-                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+				DataInputStream is = new DataInputStream(socket.getInputStream());
+                DataOutputStream os = new DataOutputStream(socket.getOutputStream());
 
-				Thread connection = new Thread(new Connection(socket, dis, dos));
+				Thread connection = new Thread(new Connection(socket, is, os));
 				connection.start();
 
 				System.out.println("A client has connected...");
@@ -38,54 +38,33 @@ public class Server
 	private class Connection extends Thread
 	{
 		private Socket socket;
+		private DataInputStream is;
 		private DataOutputStream os;
-	    private DataInputStream is;
-			
-		public Connection(Socket aSocket, DataInputStream dis, DataOutputStream dos)
+	    
+		public Connection(Socket socket, DataInputStream is, DataOutputStream os)
 		{
-			socket = aSocket;
-			os = dos;
-			is = dis;
+			this.socket = socket;
+			this.is = is;
+			this.os = os;
 		}
 
 		public void run()
 		{
-			try
+			while(true)
 			{
-				//openStreams();
-				processMessages();
-				closeStreams();
-				socket.close();
-			}
-			catch(Exception e)
-			{
-				System.out.println(e);
+				try
+				{
+					System.out.println("" + is.readInt());
+					os.writeInt(555);
+				}
+				catch(Exception e)
+				{
+					System.out.println("Trouble processing messages on server: " + e);
+				}
 			}
 		}
 			
-		/*private void openStreams() throws IOException
-	    {
-		    is = new DataInputStream(socket.getInputStream());
-		    os = new DataOutputStream(socket.getOutputStream());
-	    }*/
-
-		private void closeStreams() throws IOException
-	    {    
-		    is.close();
-		    os.close();
-	    }
-
-		private void processMessages() throws IOException
-	    {
-		    int value = 0;
-
-		    while(value != 7) //value 7 from transmitter = socket close
-		    {
-			    value = is.readInt();
-			    os.writeInt(value);
-			    System.out.println(value);
-		    }
-	    }
+		
 	}
 
 }
