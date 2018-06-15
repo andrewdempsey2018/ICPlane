@@ -25,28 +25,15 @@ public class Server
 				DataInputStream is = new DataInputStream(socket.getInputStream());
                 DataOutputStream os = new DataOutputStream(socket.getOutputStream());
 
-				Thread connection1 = new Thread(new Connection(socket, is, os));
-				connection1.start();
-
-                //***
-
-				System.out.println("A client has connected...");
-
-				socket = ss.accept();
+				Socket socket2 = ss.accept();
 			
-				is = new DataInputStream(socket.getInputStream());
-                os = new DataOutputStream(socket.getOutputStream());
+				DataInputStream is2 = new DataInputStream(socket2.getInputStream());
+                DataOutputStream os2 = new DataOutputStream(socket2.getOutputStream());
 
-				Thread connection2 = new Thread(new Connection(socket, is, os));
-				connection2.start();
+				ConnectionPair connection = new ConnectionPair(socket, is, os, socket2, is2, os2);
+				connection.start();
 
-				System.out.println("A client has connected...");
-
-				while(true)
-				{
-					connection2.os.writeInt(1);
-				}
-			}
+            }
 		}
 		catch(Exception e)
 		{	
@@ -54,17 +41,25 @@ public class Server
 		}
 	}
 
-	private class Connection extends Thread
+	private class ConnectionPair extends Thread
 	{
 		public Socket socket;
+		public Socket socket2;
 		public DataInputStream is;
 		public DataOutputStream os;
+
+		public DataInputStream is2;
+		public DataOutputStream os2;
 	    
-		public Connection(Socket socket, DataInputStream is, DataOutputStream os)
+		public ConnectionPair(Socket socket, DataInputStream is, DataOutputStream os, Socket socket2, DataInputStream is2, DataOutputStream os2)
 		{
 			this.socket = socket;
 			this.is = is;
 			this.os = os;
+
+			this.socket2 = socket2;
+			this.is2 = is2;
+			this.os2 = os2;
 		}
 
 		public void run()
@@ -73,9 +68,8 @@ public class Server
 			{
 				try
 				{
-					System.out.println("trans said: " + is.readInt());
-					//System.out.println("trans said: " + is.readInt());
-					os.writeInt(555);
+					os2.writeInt(is.readInt());
+				
 				}
 				catch(Exception e)
 				{
