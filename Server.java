@@ -5,6 +5,8 @@ public class Server
 {
     static final int PORT = 2000;
 
+	//DataOutputStream serverOs = new DataOutputStream(socket.getOutputStream());
+
 	public Server()
 	{
 		System.out.println("Server has started...");
@@ -23,10 +25,27 @@ public class Server
 				DataInputStream is = new DataInputStream(socket.getInputStream());
                 DataOutputStream os = new DataOutputStream(socket.getOutputStream());
 
-				Thread connection = new Thread(new Connection(socket, is, os));
-				connection.start();
+				Thread connection1 = new Thread(new Connection(socket, is, os));
+				connection1.start();
+
+                //***
 
 				System.out.println("A client has connected...");
+
+				socket = ss.accept();
+			
+				is = new DataInputStream(socket.getInputStream());
+                os = new DataOutputStream(socket.getOutputStream());
+
+				Thread connection2 = new Thread(new Connection(socket, is, os));
+				connection2.start();
+
+				System.out.println("A client has connected...");
+
+				while(true)
+				{
+					connection2.os.writeInt(1);
+				}
 			}
 		}
 		catch(Exception e)
@@ -37,9 +56,9 @@ public class Server
 
 	private class Connection extends Thread
 	{
-		private Socket socket;
-		private DataInputStream is;
-		private DataOutputStream os;
+		public Socket socket;
+		public DataInputStream is;
+		public DataOutputStream os;
 	    
 		public Connection(Socket socket, DataInputStream is, DataOutputStream os)
 		{
@@ -54,7 +73,8 @@ public class Server
 			{
 				try
 				{
-					System.out.println("" + is.readInt());
+					System.out.println("trans said: " + is.readInt());
+					//System.out.println("trans said: " + is.readInt());
 					os.writeInt(555);
 				}
 				catch(Exception e)
