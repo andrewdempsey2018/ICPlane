@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Transmitter extends JFrame
+public class Plane3 extends JFrame
 {
     private Socket socket;
 	static final int PORT = 2000;
@@ -14,13 +14,13 @@ public class Transmitter extends JFrame
 	private JButton elevatorUpButton, elevatorDownButton, elevatorCenterButton, rudderLeftButton, rudderRightButton, rudderCenterButton, shutdownButton;
 	private int id;
 
-    public Transmitter(int id)
+    public Plane3(int id)
 	{
-		System.out.println("Transmitter ready...");
+		System.out.println("Plane3 ready...");
 
 		setLayout(null);
 		setSize(480, 240);
-		setTitle("ICPlane Transmitter");
+		setTitle("ICPlane Plane3");
         addWindowListener(new CloseProgram());
 
 		elevatorUpButton = new JButton("Up");
@@ -51,7 +51,7 @@ public class Transmitter extends JFrame
 		shutdownButton.addActionListener(new ButtonWatcher());
 		shutdownButton.setBounds(94, 162, 64, 32);
 
-		add(elevatorUpButton);
+		/*add(elevatorUpButton);
 		add(elevatorCenterButton);
 		add(elevatorDownButton);
 
@@ -59,7 +59,7 @@ public class Transmitter extends JFrame
 
 		add(rudderLeftButton);
 		add(rudderCenterButton);
-		add(rudderRightButton);
+		add(rudderRightButton);*/
 
         try
 		{
@@ -84,10 +84,15 @@ public class Transmitter extends JFrame
 			try
 			{
 				System.out.println("server said: " + is.readInt());
+
+				if(is.readInt() == 1)
+				{
+					System.out.println("hello");
+				}
 			}
 			catch(Exception e)
 			{
-				System.out.println("trouble on transmitter: " + e);
+				System.out.println("trouble on Plane3: " + e);
 			}
 		}
 	}
