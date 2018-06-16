@@ -1,24 +1,27 @@
 import java.io.*;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Plane
 {
     private Socket socket;
 	static final int PORT = 2000;
-	static final String ADDRESS = "127.0.0.1";
+	private String address;
 	private DataInputStream is;
 
-	private DataOutputStream os; //123
+	private DataOutputStream os;
 
 	Runtime runTime = Runtime.getRuntime();
 
 	public Plane()
 	{
+        System.out.println("Plane ready...");
 
-		System.out.println("Plane ready...");
         try
 		{
-			socket = new Socket(ADDRESS, PORT);
+			address = new String(Files.readAllBytes(Paths.get("targetip.txt")));
+			socket = new Socket(address, PORT);
 			is = new DataInputStream(socket.getInputStream());
 
 			os = new DataOutputStream(socket.getOutputStream());
@@ -121,7 +124,7 @@ public class Plane
 				if(valueFromServer == 1)
 				{
 					System.out.println("elevator up: +10");
-			        runTime.exec(new String[] {"bash", "-c", "echo 1=+10 > /dev/servoblaster"});
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=10% > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 2)
@@ -133,13 +136,13 @@ public class Plane
 				if(valueFromServer == 3)
 				{
 					System.out.println("elevator down: -10");
-					runTime.exec(new String[] {"bash", "-c", "echo 1=-10 > /dev/servoblaster"});
+					runTime.exec(new String[] {"bash", "-c", "echo 1=90% > /dev/servoblaster"});
 				}
 
                 if(valueFromServer == 4)
 				{
 					System.out.println("rudder left: +10");
-					runTime.exec(new String[] {"bash", "-c", "echo 3=+10 > /dev/servoblaster"});
+					runTime.exec(new String[] {"bash", "-c", "echo 3=10% > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 5)
@@ -151,7 +154,7 @@ public class Plane
 				if(valueFromServer == 6)
 				{
 					System.out.println("rudder right: -10");
-					runTime.exec(new String[] {"bash", "-c", "echo 3=-10 > /dev/servoblaster"});
+					runTime.exec(new String[] {"bash", "-c", "echo 3=90% > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 7)
@@ -178,4 +181,6 @@ public class Plane
 			System.out.println("Connection lost " + e);
 		}
 	}
+
+
 }

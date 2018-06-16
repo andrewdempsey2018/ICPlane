@@ -3,18 +3,19 @@ import java.net.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Transmitter extends JFrame
 {
     private Socket socket;
 	static final int PORT = 2000;
-	static final String ADDRESS = "127.0.0.1";
+	private String address;
 	private DataOutputStream os;
 	private DataInputStream is;
 	private JButton elevatorUpButton, elevatorDownButton, elevatorCenterButton, rudderLeftButton, rudderRightButton, rudderCenterButton, shutdownButton;
-	private int id;
 
-    public Transmitter(int id)
+    public Transmitter()
 	{
 		System.out.println("Transmitter ready...");
 
@@ -63,7 +64,8 @@ public class Transmitter extends JFrame
 
         try
 		{
-			socket = new Socket(ADDRESS, PORT);
+			address = new String(Files.readAllBytes(Paths.get("targetip.txt")));
+			socket = new Socket(address, PORT);
 			os = new DataOutputStream(socket.getOutputStream());
 			is = new DataInputStream(socket.getInputStream());
 		}
@@ -71,8 +73,6 @@ public class Transmitter extends JFrame
 		{
 			System.out.println(e);
 		}
-
-		this.id = id;
 	}
 	
 	public void runProgram()
@@ -200,10 +200,4 @@ public class Transmitter extends JFrame
 			}
 		}
 	}
-
-	public int getId()
-	{
-		return id;
-	}
-
 }
