@@ -49,37 +49,37 @@ public class Plane
 				if(valueFromServer == 1)
 				{
 					System.out.println("elevator up: +10");
-			        //runTime.exec(new String[] {"bash", "-c", "echo 1=+10 > /dev/servoblaster"});
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=+10 > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 2)
 				{
 					System.out.println("elevator center: 50%");
-					//runTime.exec(new String[] {"bash", "-c", "echo 1=50% > /dev/servoblaster"});
+					runTime.exec(new String[] {"bash", "-c", "echo 1=50% > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 3)
 				{
 					System.out.println("elevator down: -10");
-					//runTime.exec(new String[] {"bash", "-c", "echo 1=-10 > /dev/servoblaster"});
+					runTime.exec(new String[] {"bash", "-c", "echo 1=-10 > /dev/servoblaster"});
 				}
 
                 if(valueFromServer == 4)
 				{
 					System.out.println("rudder left: +10");
-					//runTime.exec(new String[] {"bash", "-c", "echo 3=+10 > /dev/servoblaster"});
+					runTime.exec(new String[] {"bash", "-c", "echo 3=+10 > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 5)
 				{
 					System.out.println("rudder center: 50%");
-					//runTime.exec(new String[] {"bash", "-c", "echo 3=50% > /dev/servoblaster"});
+					runTime.exec(new String[] {"bash", "-c", "echo 3=50% > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 6)
 				{
 					System.out.println("rudder right: -10");
-					//runTime.exec(new String[] {"bash", "-c", "echo 3=-10 > /dev/servoblaster"});
+					runTime.exec(new String[] {"bash", "-c", "echo 3=-10 > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 7)

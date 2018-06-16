@@ -21,11 +21,13 @@ public class Server
 			while(true)
 			{
 				Socket socket = ss.accept();
+				System.out.println("Transmitter connected");
 			
 				DataInputStream is = new DataInputStream(socket.getInputStream());
                 DataOutputStream os = new DataOutputStream(socket.getOutputStream());
 
 				Socket socket2 = ss.accept();
+				System.out.println("Plane connected");
 			
 				DataInputStream is2 = new DataInputStream(socket2.getInputStream());
                 DataOutputStream os2 = new DataOutputStream(socket2.getOutputStream());
