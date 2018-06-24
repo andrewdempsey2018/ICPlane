@@ -33,7 +33,7 @@ public class Transmitter extends JFrame
 
 		add(button1);
 
-		addKeyListener(new KeyList());
+		this.addKeyListener(new KeyList());
 		
 		try
 		{
@@ -92,6 +92,10 @@ public class Transmitter extends JFrame
 
 			if(e.getSource() == button1)
 			{
+				try
+				{
+				os.writeInt(1);
+				}catch(Exception e2){}
 			}
 
 		}
@@ -101,8 +105,8 @@ public class Transmitter extends JFrame
     {
         public void keyPressed(KeyEvent k)
 		{ 
-			if(k.getKeyCode() == KeyEvent.VK_A)
-			{
+			if(k.getKeyCode() == KeyEvent.VK_UP)
+			{System.out.println("adf");
 				if(rudderPosition > 1)
 				{
 					rudderPosition--;
@@ -193,7 +197,7 @@ public class Transmitter extends JFrame
 
 		try
 		{
-			Thread.sleep(30000);
+			Thread.sleep(3000);
 		}	
 		catch(Exception e)
 		{
