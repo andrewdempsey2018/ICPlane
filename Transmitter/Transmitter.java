@@ -13,61 +13,36 @@ public class Transmitter extends JFrame
 	private String address;
 	private DataOutputStream os;
 	private DataInputStream is;
-	private JButton elevatorUpButton, elevatorDownButton, elevatorCenterButton, rudderLeftButton, rudderRightButton, rudderCenterButton, shutdownButton;
+	private JButton button1;
+
+	private int rudderPosition = 5;
+	private int elevatorPosition = 14;
 
     public Transmitter()
 	{
-		System.out.println("Transmitter ready...");
+		WaitForInternet();
 
 		setLayout(null);
 		setSize(480, 240);
 		setTitle("ICPlane Transmitter");
         addWindowListener(new CloseProgram());
 
-		elevatorUpButton = new JButton("Up");
-		elevatorUpButton.addActionListener(new ButtonWatcher());
-		elevatorUpButton.setBounds(20, 50, 64, 32);
+		button1 = new JButton("Button");
+		button1.addActionListener(new ButtonWatcher());
+		button1.setBounds(20, 50, 64, 32);
 
-		elevatorCenterButton = new JButton("Center");
-		elevatorCenterButton.addActionListener(new ButtonWatcher());
-		elevatorCenterButton.setBounds(94, 50, 64, 32);
+		add(button1);
 
-		elevatorDownButton = new JButton("Down");
-		elevatorDownButton.addActionListener(new ButtonWatcher());
-		elevatorDownButton.setBounds(168, 50, 64, 32);
-
-		rudderLeftButton = new JButton("Left");
-		rudderLeftButton.addActionListener(new ButtonWatcher());
-		rudderLeftButton.setBounds(20, 120, 64, 32);
-
-		rudderCenterButton = new JButton("Center");
-		rudderCenterButton.addActionListener(new ButtonWatcher());
-		rudderCenterButton.setBounds(94, 120, 64, 32);
-
-		rudderRightButton = new JButton("Right");
-		rudderRightButton.addActionListener(new ButtonWatcher());
-		rudderRightButton.setBounds(168, 120, 64, 32);
-
-		shutdownButton = new JButton("off");
-		shutdownButton.addActionListener(new ButtonWatcher());
-		shutdownButton.setBounds(94, 162, 64, 32);
-
-		add(elevatorUpButton);
-		add(elevatorCenterButton);
-		add(elevatorDownButton);
-
-		add(shutdownButton);
-
-		add(rudderLeftButton);
-		add(rudderCenterButton);
-		add(rudderRightButton);
-
-        try
+		addKeyListener(new KeyList());
+		
+		try
 		{
 			address = new String(Files.readAllBytes(Paths.get("targetip.txt")));
 			socket = new Socket(address, PORT);
 			os = new DataOutputStream(socket.getOutputStream());
 			is = new DataInputStream(socket.getInputStream());
+
+			System.out.println("Transmitter ready...");
 		}
 		catch(IOException e)
 		{
@@ -79,7 +54,7 @@ public class Transmitter extends JFrame
 	{
 		setVisible(true);
 
-		while(true)
+		while(socket.isConnected())
 		{
 			try
 			{
@@ -100,7 +75,7 @@ public class Transmitter extends JFrame
             
             try
             {
-				os.writeInt(7); //close socket on server
+				os.writeInt(19); //close socket on server
 			    socket.close();
             }
             catch(IOException ioe)
@@ -115,89 +90,113 @@ public class Transmitter extends JFrame
 		public void actionPerformed(ActionEvent e)
 		{
 
-			if(e.getSource() == elevatorUpButton)
+			if(e.getSource() == button1)
 			{
-				try
+			}
+
+		}
+	}
+
+	private class KeyList extends KeyAdapter
+    {
+        public void keyPressed(KeyEvent k)
+		{ 
+			if(k.getKeyCode() == KeyEvent.VK_A)
+			{
+				if(rudderPosition > 1)
 				{
-					os.writeInt(1);
-				}
-				catch(IOException ioe)
-				{
-					System.out.println(ioe);
+					rudderPosition--;
+					ModifyRudderPosition(rudderPosition);
 				}
 			}
 
-			if(e.getSource() == elevatorCenterButton)
+			if(k.getKeyCode() == KeyEvent.VK_D)
 			{
-				try
+				if(rudderPosition < 9)
 				{
-				    os.writeInt(2);
-				}
-				catch(IOException ioe)
-				{
-					System.out.println(ioe);
+					rudderPosition++;
+					ModifyRudderPosition(rudderPosition);
 				}
 			}
 
-			if(e.getSource() == elevatorDownButton)
+			if(k.getKeyCode() == KeyEvent.VK_W)
 			{
-				try
-				{
-				    os.writeInt(3);
-				}
-				catch(IOException ioe)
-				{
-					System.out.println(ioe);
-				}
+				rudderPosition = 5;
+				ModifyRudderPosition(rudderPosition);
 			}
-			
-			if(e.getSource() == rudderLeftButton)
+	
+			if(k.getKeyCode() == KeyEvent.VK_J)
 			{
-				try
+				if(elevatorPosition > 10)
 				{
-				    os.writeInt(4);
-				}
-				catch(IOException ioe)
-				{
-					System.out.println(ioe);
+					elevatorPosition--;
+					ModifyElevatorPosition(elevatorPosition);
 				}
 			}
 
-			if(e.getSource() == rudderCenterButton)
+			if(k.getKeyCode() == KeyEvent.VK_L)
 			{
-				try
+				if(elevatorPosition < 18)
 				{
-				    os.writeInt(5);
-				}
-				catch(IOException ioe)
-				{
-					System.out.println(ioe);
+					elevatorPosition++;
+					ModifyElevatorPosition(elevatorPosition);
 				}
 			}
 
-			if(e.getSource() == rudderRightButton)
+			if(k.getKeyCode() == KeyEvent.VK_I)
 			{
-				try
-				{
-				    os.writeInt(6);
-				}
-				catch(IOException ioe)
-				{
-					System.out.println(ioe);
-				}
+				elevatorPosition = 14;
+				ModifyElevatorPosition(elevatorPosition);
 			}
+		} 
+	}
 
-			if(e.getSource() == shutdownButton)
-			{
-				try
-				{
-				    os.writeInt(8);
-				}
-				catch(IOException ioe)
-				{
-					System.out.println(ioe);
-				}
-			}
+	/**
+    * Modifies the position of a servo 
+    * @param  position  an integer that denotes the position of the rudder
+    */
+	private void ModifyRudderPosition(int position)
+	{
+		System.out.println("Rudder position = " + position);
+		
+		try
+		{
+			os.writeInt(position);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Problem moving rudder: " + e);
+		}
+	}
+
+	private void ModifyElevatorPosition(int position)
+	{
+		System.out.println("Elevator position = " + position);
+		
+		try
+		{
+			os.writeInt(position);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Problem moving elevator: " + e);
+		}
+	}
+
+	/**
+    * Delays the running of the program in order to allow
+	* the host system time to establish an internet connection
+    */
+    private void WaitForInternet()
+	{
+		System.out.println("Waiting for internet connection to be established...");
+
+		try
+		{
+			Thread.sleep(30000);
+		}	
+		catch(Exception e)
+		{
 		}
 	}
 }

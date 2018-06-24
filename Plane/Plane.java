@@ -16,7 +16,8 @@ public class Plane
 
 	public Plane()
 	{
-        System.out.println("Plane ready...");
+
+		WaitForInternet();
 
         try
 		{
@@ -25,6 +26,8 @@ public class Plane
 			is = new DataInputStream(socket.getInputStream());
 
 			os = new DataOutputStream(socket.getOutputStream());
+
+			System.out.println("Plane ready...");
 		}
 		catch(IOException e)
 		{
@@ -42,43 +45,120 @@ public class Plane
 			{
                 valueFromServer = is.readInt();
 
+				//rudder
+
 				if(valueFromServer == 1)
 				{
-					System.out.println("elevator up: +10");
-			        runTime.exec(new String[] {"bash", "-c", "echo 1=+10 > /dev/servoblaster"});
+					System.out.println("Rudder 10%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=10% > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 2)
 				{
-					System.out.println("elevator center: 50%");
-					runTime.exec(new String[] {"bash", "-c", "echo 1=50% > /dev/servoblaster"});
+					System.out.println("Rudder 20%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=20% > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 3)
 				{
-					System.out.println("elevator down: -10");
-					runTime.exec(new String[] {"bash", "-c", "echo 1=-10 > /dev/servoblaster"});
+					System.out.println("Rudder 30%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=30% > /dev/servoblaster"});
 				}
 
-                if(valueFromServer == 4)
+				if(valueFromServer == 4)
 				{
-					System.out.println("rudder left: +10");
-					runTime.exec(new String[] {"bash", "-c", "echo 3=+10 > /dev/servoblaster"});
+					System.out.println("Rudder 40%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=40% > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 5)
 				{
-					System.out.println("rudder center: 50%");
-					runTime.exec(new String[] {"bash", "-c", "echo 3=50% > /dev/servoblaster"});
+					System.out.println("Rudder 50%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=50% > /dev/servoblaster"});
 				}
 
 				if(valueFromServer == 6)
 				{
-					System.out.println("rudder right: -10");
-					runTime.exec(new String[] {"bash", "-c", "echo 3=-10 > /dev/servoblaster"});
+					System.out.println("Rudder 60%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=60% > /dev/servoblaster"});
 				}
 
-				if(valueFromServer == 19)
+				if(valueFromServer == 7)
+				{
+					System.out.println("Rudder 70%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=70% > /dev/servoblaster"});
+				}
+
+				if(valueFromServer == 8)
+				{
+					System.out.println("Rudder 80%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=80% > /dev/servoblaster"});
+				}
+
+				if(valueFromServer == 9)
+				{
+					System.out.println("Rudder 90%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=90% > /dev/servoblaster"});
+				}
+
+				//elevator
+				if(valueFromServer == 10)
+				{
+					System.out.println("Elevator 10%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=10% > /dev/servoblaster"});
+				}
+
+				if(valueFromServer == 11)
+				{
+					System.out.println("Elevator 20%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=20% > /dev/servoblaster"});
+				}
+
+				if(valueFromServer == 12)
+				{
+					System.out.println("Elevator 30%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=30% > /dev/servoblaster"});
+				}
+
+				if(valueFromServer == 13)
+				{
+					System.out.println("Elevator 40%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=40% > /dev/servoblaster"});
+				}
+
+				if(valueFromServer == 14)
+				{
+					System.out.println("Elevator 50%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=50% > /dev/servoblaster"});
+				}
+
+				if(valueFromServer == 15)
+				{
+					System.out.println("Elevator 60%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=60% > /dev/servoblaster"});
+				}
+
+				if(valueFromServer == 16)
+				{
+					System.out.println("Elevator 70%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=70% > /dev/servoblaster"});
+				}
+
+				if(valueFromServer == 17)
+				{
+					System.out.println("Elevator 80%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=80% > /dev/servoblaster"});
+				}
+
+				if(valueFromServer == 18)
+				{
+					System.out.println("Elevator 90%");
+			        runTime.exec(new String[] {"bash", "-c", "echo 1=90% > /dev/servoblaster"});
+				}
+
+				//other functions
+				
+                if(valueFromServer == 19) //shutdown airplane computer
 				{
 					try
 			        {
@@ -93,11 +173,39 @@ public class Plane
 					runTime.exec("sudo shutdown -h now");
 				}
 
+				if(valueFromServer == 20)
+				{
+					//turn on camera
+				}
+
+				if(valueFromServer == 21)
+				{
+					//turn off camera
+				}
+
+				if(valueFromServer == 22)
+				{
+					//?
+				}
+
 			}
 		}
 		catch(Exception e)
 		{
 			System.out.println("Connection lost " + e);
+		}
+	}
+
+	private void WaitForInternet()
+	{
+		System.out.println("Waiting for internet connection to be established...");
+
+		try
+		{
+			Thread.sleep(30000);
+		}	
+		catch(Exception e)
+		{
 		}
 	}
 }
