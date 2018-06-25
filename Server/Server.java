@@ -66,7 +66,7 @@ public class Server
 
 		public void run()
 		{
-			while(true)
+			while(socket.isConnected() && socket2.isConnected())
 			{
 				try
 				{
@@ -77,6 +77,20 @@ public class Server
 				{
 					System.out.println("Trouble processing messages on server: " + e);
 				}
+			}
+
+			try
+			{
+			    socket.close();
+			    socket2.close();
+				//os.close();
+				//is.close();
+				//os2.close();
+				//is2.close();
+			}
+			catch(Exception e)
+			{
+				System.out.println("trouble closing sockets" + e);
 			}
 		}
 			

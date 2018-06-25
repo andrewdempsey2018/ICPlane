@@ -20,6 +20,8 @@ public class Transmitter extends JFrame
 
 	private JPanel panel;
 
+	private int reach5toshutdown = 0;
+
     public Transmitter()
 	{
 		WaitForInternet();
@@ -83,7 +85,7 @@ public class Transmitter extends JFrame
             
             try
             {
-				os.writeInt(19); //close socket on server
+				//os.writeInt(19); //close socket on server
 			    socket.close();
             }
             catch(IOException ioe)
@@ -100,10 +102,6 @@ public class Transmitter extends JFrame
 
 			if(e.getSource() == button1)
 			{
-				try
-				{
-				os.writeInt(1);
-				}catch(Exception e2){}
 			}
 
 		}
@@ -160,6 +158,24 @@ public class Transmitter extends JFrame
 				elevatorPosition = 14;
 				ModifyElevatorPosition(elevatorPosition);
 			}
+
+			if(k.getKeyCode() == KeyEvent.VK_SPACE)
+			{
+				reach5toshutdown++;
+
+				if(reach5toshutdown >= 5)
+				{
+					try
+					{
+						os.writeInt(100); //send the shutdowen command to the plane
+						Runtime.getRuntime().exec("sudo shutdown -h now");
+					}
+					catch(Exception e)
+					{
+						System.out.println("Error shutting down: " + e);
+					}
+                }
+			}
 		} 
 	}
 
@@ -205,7 +221,7 @@ public class Transmitter extends JFrame
 
 		try
 		{
-			Thread.sleep(3000);
+			Thread.sleep(30000);
 		}	
 		catch(Exception e)
 		{
