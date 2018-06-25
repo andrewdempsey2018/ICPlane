@@ -18,22 +18,30 @@ public class Transmitter extends JFrame
 	private int rudderPosition = 5;
 	private int elevatorPosition = 14;
 
+	private JPanel panel;
+
     public Transmitter()
 	{
 		WaitForInternet();
 
+		panel = new JPanel();
+		panel.setFocusable(true);
+
 		setLayout(null);
 		setSize(480, 240);
 		setTitle("ICPlane Transmitter");
+
+		add(panel);
+
         addWindowListener(new CloseProgram());
 
 		button1 = new JButton("Button");
 		button1.addActionListener(new ButtonWatcher());
 		button1.setBounds(20, 50, 64, 32);
 
-		add(button1);
+		panel.add(button1);
 
-		this.addKeyListener(new KeyList());
+		panel.addKeyListener(new KeyList());
 		
 		try
 		{
@@ -105,8 +113,8 @@ public class Transmitter extends JFrame
     {
         public void keyPressed(KeyEvent k)
 		{ 
-			if(k.getKeyCode() == KeyEvent.VK_UP)
-			{System.out.println("adf");
+			if(k.getKeyCode() == KeyEvent.VK_A)
+			{
 				if(rudderPosition > 1)
 				{
 					rudderPosition--;
