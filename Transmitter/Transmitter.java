@@ -24,8 +24,6 @@ public class Transmitter extends JFrame
 
     public Transmitter()
 	{
-		WaitForInternet();
-
 		panel = new JPanel();
 		panel.setFocusable(true);
 
@@ -129,10 +127,22 @@ public class Transmitter extends JFrame
 					ModifyRudderPosition(rudderPosition);
 				}
 			}
-
+			//center rudder
 			if(k.getKeyCode() == KeyEvent.VK_W)
 			{
 				rudderPosition = 5;
+				ModifyRudderPosition(rudderPosition);
+			}
+			//rudder all left
+			if(k.getKeyCode() == KeyEvent.VK_Z)
+			{
+				rudderPosition = 2;
+				ModifyRudderPosition(rudderPosition);
+			}
+			//rudder all right
+			if(k.getKeyCode() == KeyEvent.VK_C)
+			{
+				rudderPosition = 8;
 				ModifyRudderPosition(rudderPosition);
 			}
 	
@@ -153,10 +163,24 @@ public class Transmitter extends JFrame
 					ModifyElevatorPosition(elevatorPosition);
 				}
 			}
-
+			//center elevator
 			if(k.getKeyCode() == KeyEvent.VK_I)
 			{
 				elevatorPosition = 14;
+				ModifyElevatorPosition(elevatorPosition);
+			}
+			
+			//elevator all down
+			if(k.getKeyCode() == KeyEvent.VK_B)
+			{
+				elevatorPosition = 11;
+				ModifyElevatorPosition(elevatorPosition);
+			}
+			
+			//elevator all up
+			if(k.getKeyCode() == KeyEvent.VK_M)
+			{
+				elevatorPosition = 17;
 				ModifyElevatorPosition(elevatorPosition);
 			}
 
@@ -212,20 +236,4 @@ public class Transmitter extends JFrame
 		}
 	}
 
-	/**
-    * Delays the running of the program in order to allow
-	* the host system time to establish an internet connection
-    */
-    private void WaitForInternet()
-	{
-		System.out.println("Waiting for internet connection to be established...");
-
-		try
-		{
-			Thread.sleep(30000);
-		}	
-		catch(Exception e)
-		{
-		}
-	}
 }

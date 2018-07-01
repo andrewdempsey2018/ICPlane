@@ -17,5 +17,6 @@ Transmitter - runs on computer, sends commands to server
 
 Ensure to include targetip.txt with Transmitter.jar and Plane.jar
 
-xx
 
+
+elptop
