@@ -45,8 +45,8 @@ public class Transmitter extends JFrame
 		
 		try
 		{
-			//address = new String(Files.readAllBytes(Paths.get("targetip.txt")));
-			address = "86.44.203.8";
+			address = new String(Files.readAllBytes(Paths.get("targetip.txt")));
+			//address = "86.44.203.8";
 			socket = new Socket(address, PORT);
 			os = new DataOutputStream(socket.getOutputStream());
 			is = new DataInputStream(socket.getInputStream());
@@ -84,7 +84,9 @@ public class Transmitter extends JFrame
             
             try
             {
-				//os.writeInt(19); //close socket on server
+				os.writeInt(999); //close socket on server
+				os.close();
+				is.close();
 			    socket.close();
             }
             catch(IOException ioe)

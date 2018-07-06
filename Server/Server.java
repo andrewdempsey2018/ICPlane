@@ -4,6 +4,8 @@ import java.net.*;
 public class Server
 {
     static final int PORT = 2000;
+    ConnectionPair connection;
+	private int messageFromServer = 0;
 
 	//DataOutputStream serverOs = new DataOutputStream(socket.getOutputStream());
 
@@ -17,6 +19,7 @@ public class Server
 		try
 		{
 			ServerSocket ss = new ServerSocket(PORT);
+			
 
 			while(true)
 			{
@@ -32,7 +35,7 @@ public class Server
 				DataInputStream is2 = new DataInputStream(socket2.getInputStream());
                 DataOutputStream os2 = new DataOutputStream(socket2.getOutputStream());
 
-				ConnectionPair connection = new ConnectionPair(socket, is, os, socket2, is2, os2);
+				connection = new ConnectionPair(socket, is, os, socket2, is2, os2);
 				connection.start();
 
             }
@@ -66,32 +69,44 @@ public class Server
 
 		public void run()
 		{
-			while(socket.isConnected() && socket2.isConnected())
-			{
+			
+
+			//while(runPair)
+			//{
 				try
 				{
-					os2.writeInt(is.readInt());
+					messageFromServer = is.readInt();
+					os2.writeInt(messageFromServer);
+
+					if(messageFromServer == 999)
+					{
+						os.close();
+						is.close();
+						os2.close();
+						is2.close();
+						socket.close();
+						socket2.close();
+						//runPair = false;
+						messageFromServer = 0;
+					}
 				
 				}
 				catch(Exception e)
 				{
 					System.out.println("Trouble processing messages on server: " + e);
 				}
-			}
+			//}
 
-			try
-			{
-			    socket.close();
-			    socket2.close();
-				//os.close();
-				//is.close();
-				//os2.close();
-				//is2.close();
-			}
-			catch(Exception e)
-			{
-				System.out.println("trouble closing sockets" + e);
-			}
+			//try
+			//{
+				
+				
+			//	connection.wait();
+			//}
+			//catch(Exception e)
+			//{
+			//	System.out.println("trouble closing sockets" + e);
+			//}
 		}
 			
 		

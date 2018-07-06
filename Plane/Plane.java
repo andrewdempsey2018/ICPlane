@@ -19,8 +19,8 @@ public class Plane
 
 		try
 		{
-			//address = new String(Files.readAllBytes(Paths.get("targetip.txt")));
-			address = "86.44.203.8";
+			address = new String(Files.readAllBytes(Paths.get("targetip.txt")));
+			//address = "86.44.203.8";
 			socket = new Socket(address, PORT);
 			is = new DataInputStream(socket.getInputStream());
 
@@ -187,6 +187,13 @@ public class Plane
 				if(valueFromServer == 822)
 				{
 					//?
+				}
+
+				if(valueFromServer == 999)
+				{
+					is.close();
+					os.close();
+					socket.close();
 				}
 
 			}
