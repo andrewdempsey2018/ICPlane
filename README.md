@@ -6,6 +6,8 @@ Internet Controlled Plane
 
 A collection of three software modules that allow the user to control a model airplane without traditional RxTx hardware.
 
+* Use this software at your own risk, please read this document carefully before use *
+
 by Andrew Dempsey
 
 Uses ServoBlaster by Richard Hirst please see:
