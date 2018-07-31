@@ -1,3 +1,6 @@
+import java.io.*;
+import java.net.*;
+
 public class ConnectionPair extends Thread
 {
 	public Socket socket;
@@ -21,45 +24,16 @@ public class ConnectionPair extends Thread
 
 	public void run()
 	{
-	
-
-		//while(runPair)
-		//{
-		try
+	    try
 		{
-			messageFromServer = is.readInt();
-			os2.writeInt(messageFromServer);
-
-		    if(messageFromServer == 999)
-			{
-				os.close();
-				is.close();
-				os2.close();
-				is2.close();
-				socket.close();
-				socket2.close();
-				//runPair = false;
-				messageFromServer = 0;
-			}
-				
-				}
-				catch(Exception e)
-				{
-					System.out.println("Trouble processing messages on server: " + e);
-				}
-			//}
-
-			//try
-			//{
-				
-				
-			//	connection.wait();
-			//}
-			//catch(Exception e)
-			//{
-			//	System.out.println("trouble closing sockets" + e);
-			//}
+			os.writeInt(is2.readInt());
+			os2.writeInt(is.readInt());
+        }
+        catch(Exception e)
+		{
+		    System.out.println("Trouble processing messages on server: " + e);
 		}
+	}
 			
 		
 }

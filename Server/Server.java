@@ -5,7 +5,6 @@ public class Server
 {
     static final int PORT = 2000;
     ConnectionPair connection;
-	private int messageFromServer = 0;
 
 	//DataOutputStream serverOs = new DataOutputStream(socket.getOutputStream());
 
@@ -24,19 +23,21 @@ public class Server
 			while(true)
 			{
 				Socket socket = ss.accept();
-				System.out.println("Transmitter connected");
+				System.out.println("A client has connected, waiting for another to create a pair...");
 			
 				DataInputStream is = new DataInputStream(socket.getInputStream());
                 DataOutputStream os = new DataOutputStream(socket.getOutputStream());
 
 				Socket socket2 = ss.accept();
-				System.out.println("Plane connected");
+				System.out.println("Another client has connected, now pairing clients...");
 			
 				DataInputStream is2 = new DataInputStream(socket2.getInputStream());
                 DataOutputStream os2 = new DataOutputStream(socket2.getOutputStream());
 
 				connection = new ConnectionPair(socket, is, os, socket2, is2, os2);
 				connection.start();
+
+				System.out.println("new connection pair created, messages can now be exchanged");
 
             }
 		}
