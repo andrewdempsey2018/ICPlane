@@ -204,4 +204,18 @@ public class Plane
 		}
 	}
 
+	private void cleanup()
+	{
+		try
+		{
+			is.close();
+			os.close();
+			socket.close();
+		}
+		catch(IOException ioe)
+		{
+			System.out.println("Problem closing streams: " + ioe);
+		}
+	}
+
 }

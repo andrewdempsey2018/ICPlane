@@ -22,6 +22,8 @@ public class Transmitter extends JFrame
 
 	private int reach5toshutdown = 0;
 
+	private boolean connectedToClient;
+
     public Transmitter()
 	{
 		panel = new JPanel();
@@ -52,6 +54,8 @@ public class Transmitter extends JFrame
 			is = new DataInputStream(socket.getInputStream());
 
 			System.out.println("Transmitter ready...");
+	
+			connectedToClient = true;
 		}
 		catch(IOException e)
 		{
@@ -63,7 +67,7 @@ public class Transmitter extends JFrame
 	{
 		setVisible(true);
 
-		while(socket.isConnected())
+		while(connectedToClient)
 		{
 			try
 			{
@@ -71,8 +75,25 @@ public class Transmitter extends JFrame
 			}
 			catch(Exception e)
 			{
-				System.out.println("trouble on transmitter: " + e);
+				//System.out.println("trouble on transmitter: " + e);
+				System.out.println("Transmitter no longer connected to server");
+				connectedToClient = false;
+				cleanup();
 			}
+		}
+	}
+
+	private void cleanup()
+	{
+		try
+		{
+			is.close();
+			os.close();
+			socket.close();
+		}
+		catch(IOException ioe)
+		{
+			System.out.println("Problem closing streams: " + ioe);
 		}
 	}
 
