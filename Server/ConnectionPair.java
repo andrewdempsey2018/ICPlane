@@ -32,7 +32,7 @@ public class ConnectionPair extends Thread
 		{
 			try
 			{
-				os.writeInt(is2.readInt());
+				//os.writeInt(is2.readInt());
 				os2.writeInt(is.readInt());
 			}
 			catch(Exception e)
