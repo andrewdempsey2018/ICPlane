@@ -5,7 +5,6 @@ public class Server
 {
     static final int PORT = 2000;
     ConnectionPair connection;
-	private int messageFromServer = 0;
 
 	//DataOutputStream serverOs = new DataOutputStream(socket.getOutputStream());
 
@@ -24,19 +23,21 @@ public class Server
 			while(true)
 			{
 				Socket socket = ss.accept();
-				System.out.println("Transmitter connected");
+				System.out.println("A client has connected, waiting for another to create a pair...");
 			
 				DataInputStream is = new DataInputStream(socket.getInputStream());
                 DataOutputStream os = new DataOutputStream(socket.getOutputStream());
 
 				Socket socket2 = ss.accept();
-				System.out.println("Plane connected");
+				System.out.println("Another client has connected, now pairing clients...");
 			
 				DataInputStream is2 = new DataInputStream(socket2.getInputStream());
                 DataOutputStream os2 = new DataOutputStream(socket2.getOutputStream());
 
 				connection = new ConnectionPair(socket, is, os, socket2, is2, os2);
 				connection.start();
+
+				System.out.println("new connection pair created, messages can now be exchanged");
 
             }
 		}
@@ -45,71 +46,4 @@ public class Server
 			System.out.println(e);
 		}
 	}
-
-	private class ConnectionPair extends Thread
-	{
-		public Socket socket;
-		public Socket socket2;
-		public DataInputStream is;
-		public DataOutputStream os;
-
-		public DataInputStream is2;
-		public DataOutputStream os2;
-	    
-		public ConnectionPair(Socket socket, DataInputStream is, DataOutputStream os, Socket socket2, DataInputStream is2, DataOutputStream os2)
-		{
-			this.socket = socket;
-			this.is = is;
-			this.os = os;
-
-			this.socket2 = socket2;
-			this.is2 = is2;
-			this.os2 = os2;
-		}
-
-		public void run()
-		{
-			
-
-			//while(runPair)
-			//{
-				try
-				{
-					messageFromServer = is.readInt();
-					os2.writeInt(messageFromServer);
-
-					if(messageFromServer == 999)
-					{
-						os.close();
-						is.close();
-						os2.close();
-						is2.close();
-						socket.close();
-						socket2.close();
-						//runPair = false;
-						messageFromServer = 0;
-					}
-				
-				}
-				catch(Exception e)
-				{
-					System.out.println("Trouble processing messages on server: " + e);
-				}
-			//}
-
-			//try
-			//{
-				
-				
-			//	connection.wait();
-			//}
-			//catch(Exception e)
-			//{
-			//	System.out.println("trouble closing sockets" + e);
-			//}
-		}
-			
-		
-	}
-
 }
